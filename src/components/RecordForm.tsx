@@ -437,18 +437,12 @@ export function RecordForm({ open, onOpenChange, record, onSave, formOptions }: 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="migracao">Migração</Label>
-                  <Select
+                  <Input
+                    id="migracao"
+                    type="number"
                     value={formData.migracao}
-                    onValueChange={(value) => handleChange('migracao', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="SIM">SIM</SelectItem>
-                      <SelectItem value="NÃO">NÃO</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    onChange={(e) => handleChange('migracao', parseInt(e.target.value) || 0)}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="base_fresh">Base Fresh</Label>
