@@ -1,5 +1,23 @@
 export type Esteira = 'Móvel' | 'Fixa' | 'Avançado' | 'Energia';
 
+export interface ConsultorOption {
+  name: string;
+  equipe: string;
+}
+
+export interface PlanoOption {
+  name: string;
+  value: number;
+}
+
+export interface FormOptions {
+  consultor: ConsultorOption[];
+  status: string[];
+  servicos: string[];
+  plano: PlanoOption[];
+  pacote_sva: string[];
+}
+
 export interface Record {
   _id: string;
   esteira: Esteira;

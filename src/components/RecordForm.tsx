@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Record, RecordFormData, initialRecordFormData, Esteira } from '@/types/record';
+import { Record, RecordFormData, initialRecordFormData, Esteira, FormOptions } from '@/types/record';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,12 +25,31 @@ interface RecordFormProps {
   onOpenChange: (open: boolean) => void;
   record?: Record | null;
   onSave: (data: RecordFormData) => void;
+  formOptions?: FormOptions | null;
 }
 
 const esteiraOptions: Esteira[] = ['Móvel', 'Fixa', 'Avançado', 'Energia'];
 
-export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormProps) {
+export function RecordForm({ open, onOpenChange, record, onSave, formOptions }: RecordFormProps) {
   const [formData, setFormData] = useState<RecordFormData>(initialRecordFormData);
+
+  const handleConsultorChange = (consultorName: string) => {
+    const selectedConsultor = formOptions?.consultor.find(c => c.name === consultorName);
+    setFormData(prev => ({
+      ...prev,
+      consultor: consultorName,
+      equipe: selectedConsultor?.equipe || prev.equipe
+    }));
+  };
+
+  const handlePlanoChange = (planoName: string) => {
+    const selectedPlano = formOptions?.plano.find(p => p.name === planoName);
+    setFormData(prev => ({
+      ...prev,
+      plano: planoName,
+      valor_do_plano: selectedPlano?.value || prev.valor_do_plano
+    }));
+  };
 
   useEffect(() => {
     if (record) {
@@ -209,19 +228,39 @@ export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormPro
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="servicos">Serviços</Label>
-                  <Input
-                    id="servicos"
+                  <Select
                     value={formData.servicos}
-                    onChange={(e) => handleChange('servicos', e.target.value)}
-                  />
+                    onValueChange={(value) => handleChange('servicos', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o serviço" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formOptions?.servicos.map((servico) => (
+                        <SelectItem key={servico} value={servico}>
+                          {servico}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="plano">Plano</Label>
-                  <Input
-                    id="plano"
+                  <Select
                     value={formData.plano}
-                    onChange={(e) => handleChange('plano', e.target.value)}
-                  />
+                    onValueChange={handlePlanoChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o plano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formOptions?.plano.map((p) => (
+                        <SelectItem key={p.name} value={p.name}>
+                          {p.name} - R$ {p.value.toFixed(2)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="valor_do_plano">Valor do Plano</Label>
@@ -231,6 +270,8 @@ export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormPro
                     step="0.01"
                     value={formData.valor_do_plano}
                     onChange={(e) => handleChange('valor_do_plano', parseFloat(e.target.value) || 0)}
+                    readOnly
+                    className="bg-muted"
                   />
                 </div>
               </div>
@@ -265,11 +306,21 @@ export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormPro
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="pacote_sva">Pacote SVA</Label>
-                  <Input
-                    id="pacote_sva"
+                  <Select
                     value={formData.pacote_sva}
-                    onChange={(e) => handleChange('pacote_sva', e.target.value)}
-                  />
+                    onValueChange={(value) => handleChange('pacote_sva', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o pacote" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formOptions?.pacote_sva.map((pacote) => (
+                        <SelectItem key={pacote} value={pacote}>
+                          {pacote}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -338,9 +389,11 @@ export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormPro
                       <SelectValue placeholder="Selecione" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Ativo">Ativo</SelectItem>
-                      <SelectItem value="Pendente">Pendente</SelectItem>
-                      <SelectItem value="Inativo">Inativo</SelectItem>
+                      {formOptions?.status.map((s) => (
+                        <SelectItem key={s} value={s}>
+                          {s}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
@@ -355,18 +408,29 @@ export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormPro
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="consultor">Consultor</Label>
-                  <Input
-                    id="consultor"
+                  <Select
                     value={formData.consultor}
-                    onChange={(e) => handleChange('consultor', e.target.value)}
-                  />
+                    onValueChange={handleConsultorChange}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o consultor" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formOptions?.consultor.map((c) => (
+                        <SelectItem key={c.name} value={c.name}>
+                          {c.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="equipe">Equipe</Label>
                   <Input
                     id="equipe"
                     value={formData.equipe}
-                    onChange={(e) => handleChange('equipe', e.target.value)}
+                    readOnly
+                    className="bg-muted"
                   />
                 </div>
               </div>

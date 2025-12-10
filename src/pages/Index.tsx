@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Record, RecordFormData } from '@/types/record';
+import { Record, RecordFormData, FormOptions } from '@/types/record';
 import { mockRecords } from '@/data/mockRecords';
 import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
@@ -8,6 +8,21 @@ import { RecordForm } from '@/components/RecordForm';
 import { DeleteConfirmDialog } from '@/components/DeleteConfirmDialog';
 import { useToast } from '@/hooks/use-toast';
 
+// Mock form options - in production this would come from an API
+const mockFormOptions: FormOptions = {
+  consultor: [
+    { name: 'João Silva', equipe: 'Equipe A' },
+    { name: 'Maria Santos', equipe: 'Equipe B' },
+  ],
+  status: ['Ativo', 'Inativo', 'Pendente'],
+  servicos: ['Internet', 'Telefone', 'TV'],
+  plano: [
+    { name: 'Plano Básico', value: 99.9 },
+    { name: 'Plano Premium', value: 199.9 },
+  ],
+  pacote_sva: ['Pacote Completo', 'Pacote Básico'],
+};
+
 const Index = () => {
   const [records, setRecords] = useState<Record[]>(mockRecords);
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,6 +30,7 @@ const Index = () => {
   const [editingRecord, setEditingRecord] = useState<Record | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<Record | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
+  const [formOptions] = useState<FormOptions>(mockFormOptions);
   const { toast } = useToast();
 
   const filteredRecords = useMemo(() => {
@@ -126,6 +142,7 @@ const Index = () => {
         onOpenChange={setIsFormOpen}
         record={editingRecord}
         onSave={handleSave}
+        formOptions={formOptions}
       />
 
       <DeleteConfirmDialog
