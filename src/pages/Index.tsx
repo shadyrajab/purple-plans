@@ -1,37 +1,34 @@
 import { useState, useMemo } from 'react';
-import { Record, RecordFormData, FormOptions } from '@/types/record';
-import { mockRecords } from '@/data/mockRecords';
+import { Record, RecordFormData } from '@/types/record';
 import { Header } from '@/components/Header';
 import { SearchBar } from '@/components/SearchBar';
 import { RecordsTable } from '@/components/RecordsTable';
 import { RecordForm } from '@/components/RecordForm';
 import { DeleteConfirmDialog } from '@/components/DeleteConfirmDialog';
 import { useToast } from '@/hooks/use-toast';
-
-// Mock form options - in production this would come from an API
-const mockFormOptions: FormOptions = {
-  consultor: [
-    { name: 'João Silva', equipe: 'Equipe A' },
-    { name: 'Maria Santos', equipe: 'Equipe B' },
-  ],
-  status: ['Ativo', 'Inativo', 'Pendente'],
-  servicos: ['Internet', 'Telefone', 'TV'],
-  plano: [
-    { name: 'Plano Básico', value: 99.9 },
-    { name: 'Plano Premium', value: 199.9 },
-  ],
-  pacote_sva: ['Pacote Completo', 'Pacote Básico'],
-};
+import { useRecords } from '@/hooks/useRecords';
+import { Loader2 } from 'lucide-react';
 
 const Index = () => {
-  const [records, setRecords] = useState<Record[]>(mockRecords);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<Record | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<Record | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
-  const [formOptions] = useState<FormOptions>(mockFormOptions);
   const { toast } = useToast();
+
+  const {
+    records,
+    isLoadingRecords,
+    formOptions,
+    isLoadingConfig,
+    createRecord,
+    updateRecord,
+    deleteRecord,
+    isCreating,
+    isUpdating,
+    isDeleting,
+  } = useRecords();
 
   const filteredRecords = useMemo(() => {
     if (!searchQuery) return records;
@@ -60,51 +57,60 @@ const Index = () => {
     setDeletingRecord(record);
   };
 
-  const handleSave = (formData: RecordFormData) => {
-    if (editingRecord) {
-      setRecords((prev) =>
-        prev.map((record) =>
-          record._id === editingRecord._id
-            ? {
-                ...record,
-                ...formData,
-                updated_at: new Date().toISOString(),
-              }
-            : record
-        )
-      );
+  const handleSave = async (formData: RecordFormData) => {
+    try {
+      if (editingRecord) {
+        await updateRecord({ id: editingRecord._id, data: formData });
+        toast({
+          title: 'Registro atualizado',
+          description: 'As alterações foram salvas com sucesso.',
+        });
+      } else {
+        await createRecord(formData);
+        toast({
+          title: 'Registro criado',
+          description: 'O novo registro foi adicionado com sucesso.',
+        });
+      }
+      setSelectedRecord(null);
+      setIsFormOpen(false);
+    } catch (error) {
       toast({
-        title: 'Registro atualizado',
-        description: 'As alterações foram salvas com sucesso.',
-      });
-    } else {
-      const newRecord: Record = {
-        ...formData,
-        _id: `${Date.now()}`,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      setRecords((prev) => [newRecord, ...prev]);
-      toast({
-        title: 'Registro criado',
-        description: 'O novo registro foi adicionado com sucesso.',
-      });
-    }
-    setSelectedRecord(null);
-  };
-
-  const confirmDelete = () => {
-    if (deletingRecord) {
-      setRecords((prev) => prev.filter((record) => record._id !== deletingRecord._id));
-      toast({
-        title: 'Registro excluído',
-        description: 'O registro foi removido com sucesso.',
+        title: 'Erro',
+        description: error instanceof Error ? error.message : 'Erro ao salvar registro',
         variant: 'destructive',
       });
-      setDeletingRecord(null);
-      setSelectedRecord(null);
     }
   };
+
+  const confirmDelete = async () => {
+    if (deletingRecord) {
+      try {
+        await deleteRecord(deletingRecord._id);
+        toast({
+          title: 'Registro excluído',
+          description: 'O registro foi removido com sucesso.',
+          variant: 'destructive',
+        });
+        setDeletingRecord(null);
+        setSelectedRecord(null);
+      } catch (error) {
+        toast({
+          title: 'Erro',
+          description: error instanceof Error ? error.message : 'Erro ao excluir registro',
+          variant: 'destructive',
+        });
+      }
+    }
+  };
+
+  if (isLoadingRecords || isLoadingConfig) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -137,13 +143,15 @@ const Index = () => {
         </div>
       </main>
 
-      <RecordForm
-        open={isFormOpen}
-        onOpenChange={setIsFormOpen}
-        record={editingRecord}
-        onSave={handleSave}
-        formOptions={formOptions}
-      />
+      {formOptions && (
+        <RecordForm
+          open={isFormOpen}
+          onOpenChange={setIsFormOpen}
+          record={editingRecord}
+          onSave={handleSave}
+          formOptions={formOptions}
+        />
+      )}
 
       <DeleteConfirmDialog
         open={!!deletingRecord}
