@@ -14,6 +14,7 @@ const Index = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<Record | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<Record | null>(null);
+  const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
   const { toast } = useToast();
 
   const filteredRecords = useMemo(() => {
@@ -73,6 +74,7 @@ const Index = () => {
         description: 'O novo registro foi adicionado com sucesso.',
       });
     }
+    setSelectedRecord(null);
   };
 
   const confirmDelete = () => {
@@ -84,6 +86,7 @@ const Index = () => {
         variant: 'destructive',
       });
       setDeletingRecord(null);
+      setSelectedRecord(null);
     }
   };
 
@@ -93,16 +96,19 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 max-w-md">
-              <SearchBar value={searchQuery} onChange={setSearchQuery} />
-            </div>
-          </div>
+          <SearchBar 
+            value={searchQuery} 
+            onChange={setSearchQuery}
+            selectedRecord={selectedRecord}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onClearSelection={() => setSelectedRecord(null)}
+          />
 
           <RecordsTable
             records={filteredRecords}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
+            selectedRecord={selectedRecord}
+            onSelectRecord={setSelectedRecord}
           />
 
           {filteredRecords.length === 0 && searchQuery && (

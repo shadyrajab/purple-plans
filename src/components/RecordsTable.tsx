@@ -1,6 +1,5 @@
 import { Record } from '@/types/record';
 import { StatusBadge } from '@/components/StatusBadge';
-import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -10,13 +9,12 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 interface RecordsTableProps {
   records: Record[];
-  onEdit: (record: Record) => void;
-  onDelete: (record: Record) => void;
+  selectedRecord: Record | null;
+  onSelectRecord: (record: Record | null) => void;
 }
 
 const formatCurrency = (value: number) => {
@@ -46,7 +44,15 @@ const getEsteiraBadgeVariant = (esteira: string) => {
   }
 };
 
-export function RecordsTable({ records, onEdit, onDelete }: RecordsTableProps) {
+export function RecordsTable({ records, selectedRecord, onSelectRecord }: RecordsTableProps) {
+  const handleRowClick = (record: Record) => {
+    if (selectedRecord?._id === record._id) {
+      onSelectRecord(null);
+    } else {
+      onSelectRecord(record);
+    }
+  };
+
   return (
     <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm">
       <ScrollArea className="w-full">
@@ -84,13 +90,12 @@ export function RecordsTable({ records, onEdit, onDelete }: RecordsTableProps) {
                 <TableHead className="font-semibold text-foreground whitespace-nowrap">Histórico</TableHead>
                 <TableHead className="font-semibold text-foreground whitespace-nowrap">Consultor</TableHead>
                 <TableHead className="font-semibold text-foreground whitespace-nowrap">Equipe</TableHead>
-                <TableHead className="font-semibold text-foreground text-right whitespace-nowrap sticky right-0 bg-muted/50">Ações</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {records.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={31} className="h-32 text-center text-muted-foreground">
+                  <TableCell colSpan={30} className="h-32 text-center text-muted-foreground">
                     Nenhum registro encontrado.
                   </TableCell>
                 </TableRow>
@@ -98,8 +103,13 @@ export function RecordsTable({ records, onEdit, onDelete }: RecordsTableProps) {
                 records.map((record, index) => (
                   <TableRow
                     key={record._id}
-                    className="animate-fade-in"
+                    className={`animate-fade-in cursor-pointer transition-colors ${
+                      selectedRecord?._id === record._id 
+                        ? 'bg-primary/10 hover:bg-primary/15' 
+                        : 'hover:bg-muted/50'
+                    }`}
                     style={{ animationDelay: `${index * 50}ms` }}
+                    onClick={() => handleRowClick(record)}
                   >
                     <TableCell>
                       <Badge variant={getEsteiraBadgeVariant(record.esteira)}>
@@ -147,26 +157,6 @@ export function RecordsTable({ records, onEdit, onDelete }: RecordsTableProps) {
                     </TableCell>
                     <TableCell>{record.consultor}</TableCell>
                     <TableCell>{record.equipe}</TableCell>
-                    <TableCell className="text-right sticky right-0 bg-card">
-                      <div className="flex items-center justify-end gap-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => onEdit(record)}
-                          className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/10"
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => onDelete(record)}
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
                   </TableRow>
                 ))
               )}
