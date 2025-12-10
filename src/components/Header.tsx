@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Plus, Database } from 'lucide-react';
-
 interface HeaderProps {
   onAddNew: () => void;
   recordCount: number;
 }
-
-export function Header({ onAddNew, recordCount }: HeaderProps) {
-  return (
-    <header className="bg-gradient-subtle border-b border-border">
+export function Header({
+  onAddNew,
+  recordCount
+}: HeaderProps) {
+  return <header className="bg-gradient-subtle border-b border-border">
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -16,9 +16,7 @@ export function Header({ onAddNew, recordCount }: HeaderProps) {
               <Database className="h-6 w-6 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">
-                Gestão de Registros
-              </h1>
+              <h1 className="text-2xl font-bold text-purple-500">CONTROLE DE REGISTROS</h1>
               <p className="text-sm text-muted-foreground">
                 {recordCount} {recordCount === 1 ? 'registro' : 'registros'} cadastrados
               </p>
@@ -30,6 +28,5 @@ export function Header({ onAddNew, recordCount }: HeaderProps) {
           </Button>
         </div>
       </div>
-    </header>
-  );
+    </header>;
 }

@@ -8,15 +8,15 @@ import { DeleteConfirmDialog } from '@/components/DeleteConfirmDialog';
 import { useToast } from '@/hooks/use-toast';
 import { useRecords } from '@/hooks/useRecords';
 import { Loader2 } from 'lucide-react';
-
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<Record | null>(null);
   const [deletingRecord, setDeletingRecord] = useState<Record | null>(null);
   const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const {
     records,
     isLoadingRecords,
@@ -27,49 +27,40 @@ const Index = () => {
     deleteRecord,
     isCreating,
     isUpdating,
-    isDeleting,
+    isDeleting
   } = useRecords();
-
   const filteredRecords = useMemo(() => {
     if (!searchQuery) return records;
     const query = searchQuery.toLowerCase();
-    return records.filter(
-      (record) =>
-        record.razao_social.toLowerCase().includes(query) ||
-        record.cnpj.toLowerCase().includes(query) ||
-        record.consultor.toLowerCase().includes(query) ||
-        record.plano.toLowerCase().includes(query) ||
-        record.status.toLowerCase().includes(query)
-    );
+    return records.filter(record => record.razao_social.toLowerCase().includes(query) || record.cnpj.toLowerCase().includes(query) || record.consultor.toLowerCase().includes(query) || record.plano.toLowerCase().includes(query) || record.status.toLowerCase().includes(query));
   }, [records, searchQuery]);
-
   const handleAddNew = () => {
     setEditingRecord(null);
     setIsFormOpen(true);
   };
-
   const handleEdit = (record: Record) => {
     setEditingRecord(record);
     setIsFormOpen(true);
   };
-
   const handleDelete = (record: Record) => {
     setDeletingRecord(record);
   };
-
   const handleSave = async (formData: RecordFormData) => {
     try {
       if (editingRecord) {
-        await updateRecord({ id: editingRecord._id, data: formData });
+        await updateRecord({
+          id: editingRecord._id,
+          data: formData
+        });
         toast({
           title: 'Registro atualizado',
-          description: 'As alterações foram salvas com sucesso.',
+          description: 'As alterações foram salvas com sucesso.'
         });
       } else {
         await createRecord(formData);
         toast({
           title: 'Registro criado',
-          description: 'O novo registro foi adicionado com sucesso.',
+          description: 'O novo registro foi adicionado com sucesso.'
         });
       }
       setSelectedRecord(null);
@@ -78,11 +69,10 @@ const Index = () => {
       toast({
         title: 'Erro',
         description: error instanceof Error ? error.message : 'Erro ao salvar registro',
-        variant: 'destructive',
+        variant: 'destructive'
       });
     }
   };
-
   const confirmDelete = async () => {
     if (deletingRecord) {
       try {
@@ -90,7 +80,7 @@ const Index = () => {
         toast({
           title: 'Registro excluído',
           description: 'O registro foi removido com sucesso.',
-          variant: 'destructive',
+          variant: 'destructive'
         });
         setDeletingRecord(null);
         setSelectedRecord(null);
@@ -98,67 +88,36 @@ const Index = () => {
         toast({
           title: 'Erro',
           description: error instanceof Error ? error.message : 'Erro ao excluir registro',
-          variant: 'destructive',
+          variant: 'destructive'
         });
       }
     }
   };
-
   if (isLoadingRecords || isLoadingConfig) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+    return <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-purple-300">
       <Header onAddNew={handleAddNew} recordCount={records.length} />
 
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-6">
-          <SearchBar 
-            value={searchQuery} 
-            onChange={setSearchQuery}
-            selectedRecord={selectedRecord}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onClearSelection={() => setSelectedRecord(null)}
-          />
+          <SearchBar value={searchQuery} onChange={setSearchQuery} selectedRecord={selectedRecord} onEdit={handleEdit} onDelete={handleDelete} onClearSelection={() => setSelectedRecord(null)} />
 
-          <RecordsTable
-            records={filteredRecords}
-            selectedRecord={selectedRecord}
-            onSelectRecord={setSelectedRecord}
-          />
+          <RecordsTable records={filteredRecords} selectedRecord={selectedRecord} onSelectRecord={setSelectedRecord} />
 
-          {filteredRecords.length === 0 && searchQuery && (
-            <div className="text-center py-12">
+          {filteredRecords.length === 0 && searchQuery && <div className="text-center py-12">
               <p className="text-muted-foreground">
                 Nenhum resultado para "<span className="font-medium">{searchQuery}</span>"
               </p>
-            </div>
-          )}
+            </div>}
         </div>
       </main>
 
-      <RecordForm
-        open={isFormOpen}
-        onOpenChange={setIsFormOpen}
-        record={editingRecord}
-        onSave={handleSave}
-        formOptions={formOptions}
-      />
+      <RecordForm open={isFormOpen} onOpenChange={setIsFormOpen} record={editingRecord} onSave={handleSave} formOptions={formOptions} />
 
-      <DeleteConfirmDialog
-        open={!!deletingRecord}
-        onOpenChange={(open) => !open && setDeletingRecord(null)}
-        onConfirm={confirmDelete}
-        recordName={deletingRecord?.razao_social || ''}
-      />
-    </div>
-  );
+      <DeleteConfirmDialog open={!!deletingRecord} onOpenChange={open => !open && setDeletingRecord(null)} onConfirm={confirmDelete} recordName={deletingRecord?.razao_social || ''} />
+    </div>;
 };
-
 export default Index;
