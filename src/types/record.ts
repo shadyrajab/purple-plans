@@ -1,5 +1,8 @@
+export type Esteira = 'Móvel' | 'Fixa' | 'Avançado' | 'Energia';
+
 export interface Record {
   _id: string;
+  esteira: Esteira;
   uf: string;
   ddd: string;
   adabas: string;
@@ -36,6 +39,7 @@ export interface Record {
 export type RecordFormData = Omit<Record, '_id' | 'created_at' | 'updated_at'>;
 
 export const initialRecordFormData: RecordFormData = {
+  esteira: 'Móvel',
   uf: '',
   ddd: '',
   adabas: '',

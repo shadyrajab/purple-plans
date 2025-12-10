@@ -3,6 +3,7 @@ import { Record } from '@/types/record';
 export const mockRecords: Record[] = [
   {
     _id: "6938e0dab55fff1d8bc29d71",
+    esteira: "Móvel",
     uf: "SP",
     ddd: "11",
     adabas: "12345",
@@ -37,6 +38,7 @@ export const mockRecords: Record[] = [
   },
   {
     _id: "6938e0e4b55fff1d8bc29d72",
+    esteira: "Fixa",
     uf: "RJ",
     ddd: "21",
     adabas: "67890",
@@ -71,6 +73,7 @@ export const mockRecords: Record[] = [
   },
   {
     _id: "6938e190f49d61fb51913f23",
+    esteira: "Avançado",
     uf: "MG",
     ddd: "31",
     adabas: "11111",
