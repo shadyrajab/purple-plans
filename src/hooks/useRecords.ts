@@ -1,6 +1,22 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/services/api';
 import { Record, RecordFormData, FormOptions } from '@/types/record';
+import { mockRecords } from '@/data/mockRecords';
+
+// Fallback options quando a API não está disponível
+const fallbackFormOptions: FormOptions = {
+  consultor: [
+    { name: 'João Silva', equipe: 'Equipe A' },
+    { name: 'Maria Santos', equipe: 'Equipe B' },
+  ],
+  status: ['Ativo', 'Inativo', 'Pendente'],
+  servicos: ['Internet', 'Telefone', 'TV'],
+  plano: [
+    { name: 'Plano Básico', value: 99.9 },
+    { name: 'Plano Premium', value: 199.9 },
+  ],
+  pacote_sva: ['Pacote Completo', 'Pacote Básico'],
+};
 
 export function useRecords() {
   const queryClient = useQueryClient();
@@ -8,11 +24,13 @@ export function useRecords() {
   const recordsQuery = useQuery({
     queryKey: ['records'],
     queryFn: api.getRecords,
+    retry: 1,
   });
 
   const configQuery = useQuery({
     queryKey: ['config'],
     queryFn: api.getConfig,
+    retry: 1,
   });
 
   const createMutation = useMutation({
@@ -37,12 +55,17 @@ export function useRecords() {
     },
   });
 
+  // Usa dados mock se a API falhar
+  const records = recordsQuery.data as Record[] | undefined;
+  const formOptions = configQuery.data as FormOptions | undefined;
+
   return {
-    records: (recordsQuery.data as Record[]) || [],
+    records: records || mockRecords,
     isLoadingRecords: recordsQuery.isLoading,
     recordsError: recordsQuery.error,
-    formOptions: configQuery.data as FormOptions | undefined,
+    formOptions: formOptions || fallbackFormOptions,
     isLoadingConfig: configQuery.isLoading,
+    configError: configQuery.error,
     createRecord: createMutation.mutateAsync,
     updateRecord: updateMutation.mutateAsync,
     deleteRecord: deleteMutation.mutateAsync,

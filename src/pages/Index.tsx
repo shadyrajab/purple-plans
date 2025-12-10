@@ -143,15 +143,13 @@ const Index = () => {
         </div>
       </main>
 
-      {formOptions && (
-        <RecordForm
-          open={isFormOpen}
-          onOpenChange={setIsFormOpen}
-          record={editingRecord}
-          onSave={handleSave}
-          formOptions={formOptions}
-        />
-      )}
+      <RecordForm
+        open={isFormOpen}
+        onOpenChange={setIsFormOpen}
+        record={editingRecord}
+        onSave={handleSave}
+        formOptions={formOptions}
+      />
 
       <DeleteConfirmDialog
         open={!!deletingRecord}
