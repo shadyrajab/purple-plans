@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Record, RecordFormData, initialRecordFormData } from '@/types/record';
+import { Record, RecordFormData, initialRecordFormData, Esteira } from '@/types/record';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,6 +26,8 @@ interface RecordFormProps {
   record?: Record | null;
   onSave: (data: RecordFormData) => void;
 }
+
+const esteiraOptions: Esteira[] = ['Móvel', 'Fixa', 'Avançado', 'Energia'];
 
 export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormProps) {
   const [formData, setFormData] = useState<RecordFormData>(initialRecordFormData);
@@ -65,6 +67,33 @@ export function RecordForm({ open, onOpenChange, record, onSave }: RecordFormPro
 
         <ScrollArea className="h-[60vh] pr-4">
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Esteira */}
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium text-primary border-b border-border pb-2">
+                Classificação
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="esteira">Esteira</Label>
+                  <Select
+                    value={formData.esteira}
+                    onValueChange={(value) => handleChange('esteira', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione a esteira" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {esteiraOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
             {/* Dados da Empresa */}
             <div className="space-y-4">
               <h3 className="text-sm font-medium text-primary border-b border-border pb-2">
