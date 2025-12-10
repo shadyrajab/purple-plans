@@ -141,11 +141,7 @@ export function RecordsTable({ records, selectedRecord, onSelectRecord }: Record
                     <TableCell className="font-medium text-primary">{formatCurrency(record.valor_atual)}</TableCell>
                     <TableCell className="font-medium">{formatCurrency(record.valor_da_renovacao)}</TableCell>
                     <TableCell className="text-center">{record.m}</TableCell>
-                    <TableCell>
-                      <Badge variant={record.migracao === 'SIM' ? 'success' : 'secondary'}>
-                        {record.migracao}
-                      </Badge>
-                    </TableCell>
+                    <TableCell className="text-center">{record.migracao}</TableCell>
                     <TableCell className="text-muted-foreground">{record.base_fresh}</TableCell>
                     <TableCell className="text-center">{record.qtd}</TableCell>
                     <TableCell>
