@@ -63,6 +63,11 @@ export function RecordForm({ open, onOpenChange, record, onSave, formOptions }: 
   const handleChange = (field: keyof RecordFormData, value: string | number) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
+  
+  // Função específica para migracao que aceita string ou número
+  const handleMigracaoChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, migracao: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -439,9 +444,10 @@ export function RecordForm({ open, onOpenChange, record, onSave, formOptions }: 
                   <Label htmlFor="migracao">Migração</Label>
                   <Input
                     id="migracao"
-                    type="number"
-                    value={formData.migracao}
-                    onChange={(e) => handleChange('migracao', parseInt(e.target.value) || 0)}
+                    type="text"
+                    value={String(formData.migracao || '')}
+                    onChange={(e) => handleMigracaoChange(e.target.value)}
+                    placeholder="Ex: 187, SIM, etc."
                   />
                 </div>
                 <div className="space-y-2">

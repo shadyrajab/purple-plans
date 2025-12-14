@@ -42,7 +42,7 @@ export interface Record {
   valor_atual: number;
   valor_da_renovacao: number;
   m: string;
-  migracao: number;
+  migracao: number | string;
   base_fresh: string;
   qtd: number;
   status: string;
@@ -79,7 +79,7 @@ export const initialRecordFormData: RecordFormData = {
   valor_atual: 0,
   valor_da_renovacao: 0,
   m: '',
-  migracao: 0,
+  migracao: '',
   base_fresh: '',
   qtd: 0,
   status: 'Ativo',

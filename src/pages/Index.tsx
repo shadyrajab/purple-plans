@@ -30,9 +30,18 @@ const Index = () => {
     isDeleting
   } = useRecords();
   const filteredRecords = useMemo(() => {
-    if (!searchQuery) return records;
+    // Garante que records seja sempre um array
+    const recordsArray = Array.isArray(records) ? records : [];
+    if (recordsArray.length === 0) return [];
+    if (!searchQuery) return recordsArray;
     const query = searchQuery.toLowerCase();
-    return records.filter(record => record.razao_social.toLowerCase().includes(query) || record.cnpj.toLowerCase().includes(query) || record.consultor.toLowerCase().includes(query) || record.plano.toLowerCase().includes(query) || record.status.toLowerCase().includes(query));
+    return recordsArray.filter(record => 
+      record?.razao_social?.toLowerCase().includes(query) || 
+      record?.cnpj?.toLowerCase().includes(query) || 
+      record?.consultor?.toLowerCase().includes(query) || 
+      record?.plano?.toLowerCase().includes(query) || 
+      record?.status?.toLowerCase().includes(query)
+    );
   }, [records, searchQuery]);
   const handleAddNew = () => {
     setEditingRecord(null);
@@ -98,8 +107,12 @@ const Index = () => {
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>;
   }
+  
+  // Garante que records seja sempre um array
+  const recordsArray = Array.isArray(records) ? records : [];
+  
   return <div className="min-h-screen bg-purple-300">
-      <Header onAddNew={handleAddNew} recordCount={records.length} />
+      <Header onAddNew={handleAddNew} recordCount={recordsArray.length} />
 
       <main className="container mx-auto px-4 py-8">
         <div className="space-y-6">

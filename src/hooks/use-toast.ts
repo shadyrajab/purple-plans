@@ -174,7 +174,7 @@ function useToast() {
         listeners.splice(index, 1);
       }
     };
-  }, [state]);
+  }, []); // Removido 'state' das dependências para evitar loop infinito
 
   return {
     ...state,
