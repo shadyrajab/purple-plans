@@ -1,13 +1,5 @@
 import { Record } from '@/types/record';
 import { StatusBadge } from '@/components/StatusBadge';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 
@@ -54,56 +46,56 @@ export function RecordsTable({ records, selectedRecord, onSelectRecord }: Record
   };
 
   return (
-    <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm">
+    <div className="rounded-xl border border-border bg-card overflow-hidden shadow-sm w-full">
       <ScrollArea className="w-full">
-        <div className="min-w-[2500px]">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-muted/50 hover:bg-muted/50">
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Esteira</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">UF</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">DDD</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Adabas</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Responsável</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Data Entrega</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">CRM</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Simulação</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Pedido</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Razão Social</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">CNPJ</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Serviços</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Plano</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Valor Plano</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Qtd. Aparelhos</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Valor Aparelho</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Qtd. SVA</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Pacote SVA</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Valor SVA</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Valor Atual</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Valor Renovação</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">M</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Migração</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Base Fresh</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Qtd</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Status</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Data Status</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Histórico</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Consultor</TableHead>
-                <TableHead className="font-semibold text-foreground whitespace-nowrap">Equipe</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+        <div className="w-full min-w-[2500px]">
+          <table className="w-full caption-bottom text-sm">
+            <thead className="[&_tr]:border-b">
+              <tr className="border-b transition-colors bg-muted/50 hover:bg-muted/50">
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Esteira</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">UF</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">DDD</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Adabas</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Responsável</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Data Entrega</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">CRM</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Simulação</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Pedido</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Razão Social</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">CNPJ</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Serviços</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Plano</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Valor Plano</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Qtd. Aparelhos</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Valor Aparelho</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Qtd. SVA</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Pacote SVA</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Valor SVA</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Valor Atual</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Valor Renovação</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">M</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Migração</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Base Fresh</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Qtd</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Status</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Data Status</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Histórico</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Consultor</th>
+                <th className="h-12 px-4 text-left align-middle font-semibold text-foreground whitespace-nowrap">Equipe</th>
+              </tr>
+            </thead>
+            <tbody className="[&_tr:last-child]:border-0">
               {records.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={30} className="h-32 text-center text-muted-foreground">
+                <tr>
+                  <td colSpan={30} className="p-4 align-middle h-32 text-center text-muted-foreground">
                     Nenhum registro encontrado.
-                  </TableCell>
-                </TableRow>
+                  </td>
+                </tr>
               ) : (
                 records.map((record, index) => (
-                  <TableRow
+                  <tr
                     key={record._id}
-                    className={`animate-fade-in cursor-pointer transition-colors ${
+                    className={`border-b transition-colors animate-fade-in cursor-pointer ${
                       selectedRecord?._id === record._id 
                         ? 'bg-primary/10 hover:bg-primary/15' 
                         : 'hover:bg-muted/50'
@@ -111,53 +103,53 @@ export function RecordsTable({ records, selectedRecord, onSelectRecord }: Record
                     style={{ animationDelay: `${index * 50}ms` }}
                     onClick={() => handleRowClick(record)}
                   >
-                    <TableCell>
+                    <td className="p-4 align-middle">
                       <Badge variant={getEsteiraBadgeVariant(record.esteira)}>
                         {record.esteira}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td className="p-4 align-middle">
                       <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary text-xs font-semibold">
                         {record.uf}
                       </span>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{record.ddd}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.adabas}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.responsavel_p_colocar_na_planilha}</TableCell>
-                    <TableCell className="text-muted-foreground">{formatDate(record.data_entrega)}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.crm}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.simulacao}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.pedido}</TableCell>
-                    <TableCell className="font-medium">{record.razao_social}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.cnpj}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.servicos}</TableCell>
-                    <TableCell>{record.plano}</TableCell>
-                    <TableCell className="font-medium text-primary">{formatCurrency(record.valor_do_plano)}</TableCell>
-                    <TableCell className="text-center">{record.quantidade_aparelho}</TableCell>
-                    <TableCell className="font-medium">{formatCurrency(record.valor_do_aparelho)}</TableCell>
-                    <TableCell className="text-center">{record.qtd_sva}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.pacote_sva}</TableCell>
-                    <TableCell className="font-medium">{formatCurrency(record.valor_sva)}</TableCell>
-                    <TableCell className="font-medium text-primary">{formatCurrency(record.valor_atual)}</TableCell>
-                    <TableCell className="font-medium">{formatCurrency(record.valor_da_renovacao)}</TableCell>
-                    <TableCell className="text-center">{record.m}</TableCell>
-                    <TableCell className="text-center">{record.migracao}</TableCell>
-                    <TableCell className="text-muted-foreground">{record.base_fresh}</TableCell>
-                    <TableCell className="text-center">{record.qtd}</TableCell>
-                    <TableCell>
+                    </td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.ddd}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.adabas}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.responsavel_p_colocar_na_planilha}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{formatDate(record.data_entrega)}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.crm}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.simulacao}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.pedido}</td>
+                    <td className="p-4 align-middle font-medium">{record.razao_social}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.cnpj}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.servicos}</td>
+                    <td className="p-4 align-middle">{record.plano}</td>
+                    <td className="p-4 align-middle font-medium text-primary">{formatCurrency(record.valor_do_plano)}</td>
+                    <td className="p-4 align-middle text-center">{record.quantidade_aparelho}</td>
+                    <td className="p-4 align-middle font-medium">{formatCurrency(record.valor_do_aparelho)}</td>
+                    <td className="p-4 align-middle text-center">{record.qtd_sva}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.pacote_sva}</td>
+                    <td className="p-4 align-middle font-medium">{formatCurrency(record.valor_sva)}</td>
+                    <td className="p-4 align-middle font-medium text-primary">{formatCurrency(record.valor_atual)}</td>
+                    <td className="p-4 align-middle font-medium">{formatCurrency(record.valor_da_renovacao)}</td>
+                    <td className="p-4 align-middle text-center">{record.m}</td>
+                    <td className="p-4 align-middle text-center">{String(record.migracao)}</td>
+                    <td className="p-4 align-middle text-muted-foreground">{record.base_fresh}</td>
+                    <td className="p-4 align-middle text-center">{record.qtd}</td>
+                    <td className="p-4 align-middle">
                       <StatusBadge status={record.status} />
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{formatDate(record.data_do_status)}</TableCell>
-                    <TableCell className="text-muted-foreground max-w-[200px] truncate" title={record.historico}>
+                    </td>
+                    <td className="p-4 align-middle text-muted-foreground">{formatDate(record.data_do_status)}</td>
+                    <td className="p-4 align-middle text-muted-foreground max-w-[200px] truncate" title={record.historico}>
                       {record.historico}
-                    </TableCell>
-                    <TableCell>{record.consultor}</TableCell>
-                    <TableCell>{record.equipe}</TableCell>
-                  </TableRow>
+                    </td>
+                    <td className="p-4 align-middle">{record.consultor}</td>
+                    <td className="p-4 align-middle">{record.equipe}</td>
+                  </tr>
                 ))
               )}
-            </TableBody>
-          </Table>
+            </tbody>
+          </table>
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>

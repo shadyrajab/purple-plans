@@ -114,7 +114,7 @@ const Index = () => {
   return <div className="min-h-screen bg-purple-300">
       <Header onAddNew={handleAddNew} recordCount={recordsArray.length} />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="w-full px-2 sm:px-4 lg:px-6 py-8">
         <div className="space-y-6">
           <SearchBar value={searchQuery} onChange={setSearchQuery} selectedRecord={selectedRecord} onEdit={handleEdit} onDelete={handleDelete} onClearSelection={() => setSelectedRecord(null)} />
 
